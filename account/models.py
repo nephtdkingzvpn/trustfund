@@ -77,5 +77,5 @@ class UserBankAccount(models.Model):
 	# picture = models.FileField(upload_to='profile_pictures', default='default-img.jpg')
 
 	def __str__(self):
-		return str(self.user.first_name)
+		return f"{self.user.first_name} {self.user.last_name}"
 

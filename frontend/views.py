@@ -77,7 +77,7 @@ class ContactUsView(TemplateView):
 
 class RegisterUserView(CreateView):
     redirect_authenticated_user = True
-    template_name = 'frontend/register.html'
+    template_name = 'frontend2/register.html'
     model = CustomUser
     form_class = UserRegisterForm
 
