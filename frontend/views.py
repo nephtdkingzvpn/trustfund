@@ -12,6 +12,7 @@ from django.urls import reverse_lazy
 from account.models import CustomUser
 from account.forms import UserLoginForm, UserRegisterForm, UserBankAccountForm
 from transactions import emailsend
+from codes.forms import CodeForm
 
 class HomeView(TemplateView):
     template_name = 'frontend2/index.html'
@@ -118,20 +119,62 @@ class LoginUserView(LoginView):
     template_name = 'frontend2/login.html'
 
     def get_success_url(self):
-        if self.request.user.is_staff:
-            return reverse_lazy('account:admin_dashboard')
-        else:
-            return reverse_lazy('account:customer_dashboard')
+        return reverse_lazy('account:admin_dashboard')
+        # if self.request.user.is_staff:
+        #     return reverse_lazy('account:admin_dashboard')
+        # else:
+        #     return reverse_lazy('account:customer_dashboard')
         
     def form_valid(self, form):
         user = form.get_user()
         customer = CustomUser.objects.get(email=user.email)
         if customer.is_activated:
-            auth_login(self.request, form.get_user())
-            return HttpResponseRedirect(self.get_success_url())
+            if customer.is_staff:
+                auth_login(self.request, form.get_user())
+                return HttpResponseRedirect(self.get_success_url())
+            else:
+                self.request.session['pk'] = user.pk
+                return HttpResponseRedirect(reverse_lazy('frontend:verify_otp'))
         else:
             messages.error(self.request,'This account is not activated, please contact our customer service for activation of your account')
             return self.render_to_response(self.get_context_data(form=form))
     def form_invalid(self, form):
         messages.error(self.request,'Invalid login cridentials, please check the details and try again')
         return self.render_to_response(self.get_context_data(form=form))
+    
+
+def verifyOtp(request):
+    form = CodeForm(request.POST or None)
+    pk = request.session.get('pk')
+    user = CustomUser.objects.get(id=pk)
+    email = user.email
+    if pk:
+        try:
+            user = CustomUser.objects.get(id=pk)
+        except:
+            pass
+        otp_code = user.otp
+        email = user.email
+
+        if not request.POST:
+            try:
+                message = render_to_string('emails/login_otp_email.html',{
+                    'name':f'{user.first_name} {user.last_name}',
+                    'code':otp_code
+                })
+                emailsend.email_send('Account Login OTP Code', message, user.email)
+            except:
+                pass
+        if form.is_valid():
+            num = form.cleaned_data.get('number')
+
+            if str(otp_code) == num:
+                otp_code.save()
+                auth_login(request, user)
+                return redirect('account:customer_dashboard')   
+            else:
+                messages.error(request, 'Incorrect OTP code, check the code and try again')
+                return redirect('frontend:verify_otp')
+
+    context = {'form': form, 'email':email}
+    return render(request, 'frontend2/login_otp.html', context)
