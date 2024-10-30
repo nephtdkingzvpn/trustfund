@@ -26,7 +26,7 @@
             {% endif %}
               <hr>
 
-              <form action="." method="POST">
+              <form action="." method="POST" id="ctransfer-form">
                 {% csrf_token %}
 
                 {% if form.errors %}
@@ -95,7 +95,13 @@
                 </div>
                 <!-- <hr> -->
                 <div class="mb-3">
-                  <input type="submit" value="Send" class="btn btn-info w-100 fw-bold text-white">
+                  <!-- <input type="submit" value="Send" class="btn btn-info w-100 fw-bold text-white"> -->
+                    <button type="submit" id="ctransfer-btn" class="btn btn-danger w-100 fw-bold">
+                        <span id="ctransfer-btn-text">Send</span>
+                        <div class="spinner-border text-light spinner-border-sm d-none" role="status" id="ctransfer-btn-spinner">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </button>
                 </div>
               </form>
 
@@ -106,5 +112,23 @@
     </div>
   </section>
 
+<script>
+    const form = document.querySelector('#ctransfer-form');
+    const loginBtn = document.querySelector('#ctransfer-btn');
+    const btnSpinner = document.querySelector('#ctransfer-btn-spinner');
+    const btnText = document.querySelector('#ctransfer-btn-text');
+
+    form.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        console.log('clicked');
+
+        loginBtn.style.backgroundColor = '#e88087';
+        loginBtn.style.borderColor = '#e88087';
+        btnText.style.display = 'none';
+        btnSpinner.classList.remove('d-none');
+
+        form.submit();
+    })
+</script>
 
 {% endblock%}

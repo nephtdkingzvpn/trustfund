@@ -21,7 +21,7 @@ import cloudinary.api
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app", ".now.sh", 'localhost','trustfundonline.top', 'www.trustfundonline.top']
 
@@ -150,11 +150,11 @@ SESSION_TIMEOUT_REDIRECT = '/'
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'mail.privateemail.com'
+EMAIL_HOST = 'smtp.zoho.com'
 EMAIL_PORT = 465
 # EMAIL_PORT = 587
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = 'Hillmark Bnk <customerservice@hmb-online.com>'
+DEFAULT_FROM_EMAIL = 'Trustfund <contact@trustfundonline.top>'
