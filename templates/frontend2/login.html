@@ -1,0 +1,58 @@
+{% extends './base.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-5">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h3 class="text-danger text-center">Login</h3>
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{message}}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                    <hr>
+                    <form action="." method="POST">
+
+                        {% csrf_token %}
+                
+                        {% for field in form %}  
+                            {{ field.label_tag }} 
+                                {{ field }}
+                                {% if field.errors %}
+                                <small>{{ field.errors|striptags }}</small> 
+                            {% endif %}
+                        {% endfor %}
+                        <!-- <div class="mb-3">
+                            <label for="email" class="form-label fw-bold">Email</label>
+                            <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-bold">Password</label>
+                            <input type="password" class="form-control" id="password">
+                        </div> -->
+                        <div class="mb-3">
+                            
+                            <button type="submit" class="btn btn-danger w-100 fw-bold">
+                                <span id="btn-text">Login</span>
+                            </button>
+                        </div>
+
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- slogan area start -->
+{% include './includes/slogan.html' %}
+<!-- slogan area end -->
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends './base.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-md-5">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h3 class="text-danger text-center">Enter OTP</h3>
+                    <hr>
+                    <p class="text-center">A one time verification code has been sent to your email <strong>email@email.com, </strong>please enter the code below to continue......</p>
+                    <center>
+                        <div class="spinner-grow text-danger my-3" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </center>
+                    
+                    <hr>
+                    <div class="mb-3">
+                        <label for="otp" class="form-label fw-bold">Enter OTP</label>
+                        <input type="text" class="form-control" id="otp">
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-danger w-100 fw-bold">
+                            <span id="btn-text">Continue</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- slogan area start -->
+{% include './includes/slogan.html' %}
+<!-- slogan area end -->
+{% endblock %}
