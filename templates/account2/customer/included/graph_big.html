@@ -1,3 +1,5 @@
+{% load humanize %}
+
 <style>
     .wavy-card{
         overflow-x: hidden;
@@ -35,8 +37,8 @@
         <div class="col-md-4">
             <div class="card shadow-sm text-white wavy-card">
                 <div class="main p-3">
-                    <p class="m-0">Maximum Withdrawer</p>
-                    <p class="small text-light m-0" style="font-size: 12px;">Update: 3:15AM, wed 31 Jan 2024</p>
+                    <p class="m-0">Balance: {{account.currency}}{{account.balance|intcomma}}</p>
+                    <p class="small text-light m-0" style="font-size: 12px;">Updated: {{request.user.last_login}}</p>
                 </div>
                 <!-- <svg viewBox="0 0 500 200">
                     <path d="M 0 30 C 150 100 280 0 500 20 L 500 0 L 0 0" fill="#8a0808"></path>
@@ -108,7 +110,7 @@
     const myBarChart = new Chart(ctx2, {
         type: 'bar', // Specify the type of chart
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], // X-axis labels
+            labels: ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'], // X-axis labels
             datasets: [{
                 label: 'withdrawer',
                 data: [12, 19, 3, 5, 2, 3], // Y-axis data

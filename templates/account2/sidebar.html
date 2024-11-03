@@ -2,8 +2,8 @@
 
 <style>
     .btn-warning{
-        background-color: rgb(51, 51, 170) !important;
-        border-color: rgb(73, 73, 236);
+        background-color: #0d061a !important;
+        border-color: #06030a;
     }
 </style>
 
@@ -24,7 +24,7 @@
 
         <!-- Right-aligned content -->
         <div class="d-flex align-items-center ms-auto">
-            <img src="{{account.picture.url}}" alt="Profile" class="rounded-circle" width="40" height="40">
+            <img src="{{request.user.account.picture.url}}" alt="Profile" class="rounded-circle" width="40" height="40">
             <div class="dropdown ms-3">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                     Translate
@@ -47,7 +47,7 @@
         <button type="button" class="btn-close btn-close-custom d-lg-none" id="closeSidebar"></button>
     </div>
     <div class="profile_picture px-4">
-        <img src="{{account.picture.url}}" alt="Profile" class="rounded-circle" width="140" height="140">
+        <img src="{{request.user.account.picture.url}}" alt="Profile" class="rounded-circle" width="140" height="140">
     </div>
     <hr>
     
@@ -88,15 +88,15 @@
                 <i class="fa-solid fa-gear me-4"></i><span>Settings</span>
             </a>
         </li>
-        <!-- <li class="nav-item">
+        <li class="nav-item">
             
-            <a class="nav-link" href="{% url 'account:logout' %}">
-                <i class="fa-solid fa-gear me-4"></i><span>Logout</span>
+            <a class="mt-2 btn btn-warning w-100 text-white" href="{% url 'account:logout' %}">
+                <span>Logout</span><i class="ms-3 fa-solid fa-arrow-right-from-bracket"></i>
             </a>
-        </li> -->
+        </li>
         
     </ul>
-    <a class="mt-4 btn btn-warning w-100 text-white" href="{% url 'account:logout' %}">
+    <!-- <a class="mt-4 btn btn-warning w-100 text-white" href="{% url 'account:logout' %}">
         <span>Logout</span><i class="ms-3 fa-solid fa-arrow-right-from-bracket"></i>
-    </a>
+    </a> -->
 </div>

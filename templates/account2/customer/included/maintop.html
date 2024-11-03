@@ -1,3 +1,5 @@
+{% load custom_filters %}
+
 <div class="main_area_top">
     <div class="container text-white py-5 px-4">
         <div class="row">
@@ -6,11 +8,18 @@
                 <p>
                     <span class="small">Welcome: </span> 
                     <strong>{{request.user.get_full_name}}</strong>
-                    <span class="small">Logged User IP: 1902.421.46.37</span>
+                    <span class="small">
+                        Logged User IP: 
+                        {% if request.META.HTTP_X_FORWARDED_FOR %}
+                            {{ request.META.HTTP_X_FORWARDED_FOR|split:","|first }}
+                        {% else %}
+                            {{ request.META.REMOTE_ADDR }}
+                        {% endif %}
+                    </span>
                 </p>
                 <p>
-                    <strong class="text-light">Time:</strong>
-                    <span>12:39 pm</span>
+                    <strong class="text-light">Last Login:</strong>
+                    <span>{{request.user.last_login}}</span>
                 </p>
                     
             </div>

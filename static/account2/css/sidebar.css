@@ -12,6 +12,11 @@
 .bg-danger {
   background-color: var(--main-color) !important;
 }
+
+.btn-danger {
+  background-color: var(--main-color) !important;
+  border-color: var(--main-color) !important;
+}
 /* Sidebar styling */
 #sidebar {
   width: 220px;
@@ -35,6 +40,16 @@
 #sidebar .nav-item .nav-link {
   color: #8a0808;
   font-weight: 700;
+  margin-bottom: 15px;
+}
+
+#sidebar .nav-item .nav-link.active {
+  background-color: #5719c2;
+  color: var(--main-white);
+}
+#sidebar .nav-item .nav-link:hover {
+  background-color: #5719c2;
+  color: var(--main-white);
 }
 
 /* On large screens, always show sidebar */
@@ -185,4 +200,8 @@
 
 .card-text {
   font-size: 17px;
+}
+
+.card-text2 {
+  font-size: 22px;
 }

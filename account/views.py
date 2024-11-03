@@ -143,6 +143,7 @@ class CustomerDashboardView(TemplateView):
         context['ledger_balance'] = context['account'].balance - 2500
         customer_transactions = Transaction.objects.filter(account=self.request.user.account)
         context['transactions'] = customer_transactions[:7]
+        context['ip_address'] = self.request.META.get('REMOTE_ADDR')
         
         # getting transactions by transaction type
         deposits = customer_transactions.filter(transaction_type='CR')
@@ -161,7 +162,7 @@ class CustomerDashboardView(TemplateView):
 
 
 class CustomerCareView(TemplateView):
-    template_name = 'account/customer/customer_care.html'
+    template_name = 'account2/customer/customer_care.html'
 
     def post(self, request, *args, **kwargs):
         name = self.request.POST.get('name')
@@ -192,11 +193,11 @@ class CustomerCareView(TemplateView):
         
 
 class CustomerEwalleteView(TemplateView):
-    template_name = 'account/customer/customer_ewallet.html'
+    template_name = 'account2/customer/customer_ewallet.html'
 
 
 class CustomerSettingsView(TemplateView):
-    template_name = 'account/customer/customer_settings.html'
+    template_name = 'account2/customer/customer_settings.html'
 
     def get_context_data(self, *args, **kwargs):
         context = super(CustomerSettingsView, self).get_context_data(*args, **kwargs)
