@@ -206,7 +206,7 @@ class CustomerSettingsView(TemplateView):
 
 class CustomerAllTransactionsView(ListView):
     model = Transaction
-    template_name = 'account/customer/customer_all_transactions.html'
+    template_name = 'account2/customer/transaction_list.html'
     context_object_name = 'transactions'
 
     def get_queryset(self):
