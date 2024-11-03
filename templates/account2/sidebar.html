@@ -1,16 +1,25 @@
 {% load static %}
 
+<style>
+    .btn-warning{
+        background-color: rgb(51, 51, 170) !important;
+        border-color: rgb(73, 73, 236);
+    }
+</style>
+
 <!-- Main Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-danger shadow">
+<nav class="navbar navbar-expand-lg navbar-light bg-danger shadow p-0">
     <div class="container-fluid">
         <!-- Sidebar Toggle Button, visible only on smaller screens -->
-        <button class="btn btn-outline-primary d-lg-none me-3" id="sidebarToggle">
-            <i class="bi bi-list"></i>
+        <button class="btn btn-outline-white d-lg-none me-3" id="sidebarToggle">
+            <i class="fa-solid fa-bars text-white" style="font-size: 25px;"></i>
+            <!-- <i class="bi bi-list"></i> -->
         </button>
 
         <!-- Navbar Brand -->
         <a class="navbar-brand" href="#">
             <!-- <img src="../assets/images/mylogo/logome1.png" alt="" class="logo" style="width: 50px;"> -->
+            <img src="{% static 'assets/images/mylogo/logome2half.png' %}" alt="logo" style="width: 40px;">
         </a>
 
         <!-- Right-aligned content -->
@@ -43,9 +52,51 @@
     <hr>
     
     <ul class="nav flex-column p-2">
-        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">About</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+        <li class="nav-item">
+            
+            <a class="nav-link" href="{% url 'account:customer_dashboard' %}">
+                <i class="fa-solid fa-house me-4"></i><span>Dashboard</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            
+            <a class="nav-link" href="{% url 'transactions:customer_transfer' %}">
+                <i class="fa-solid fa-money-bill-transfer me-4"></i><span>Make Transfer</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            
+            <a class="nav-link" href="{% url 'account:customer_transactions' %}">
+                <i class="fa-regular fa-address-book me-4"></i><span>Statement</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            
+            <a class="nav-link" href="{% url 'account:customer_care' %}">
+                <i class="fa-solid fa-headset me-4"></i><span>Customer Care</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            
+            <a class="nav-link" href="{% url 'account:customer_ewallet' %}">
+                <i class="fa-solid fa-wallet me-4"></i><span>E-Wallet</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            
+            <a class="nav-link" href="{% url 'account:customer_settings' %}">
+                <i class="fa-solid fa-gear me-4"></i><span>Settings</span>
+            </a>
+        </li>
+        <!-- <li class="nav-item">
+            
+            <a class="nav-link" href="{% url 'account:logout' %}">
+                <i class="fa-solid fa-gear me-4"></i><span>Logout</span>
+            </a>
+        </li> -->
+        
     </ul>
+    <a class="mt-4 btn btn-warning w-100 text-white" href="{% url 'account:logout' %}">
+        <span>Logout</span><i class="ms-3 fa-solid fa-arrow-right-from-bracket"></i>
+    </a>
 </div>
