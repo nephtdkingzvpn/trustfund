@@ -135,7 +135,7 @@ def admin_delete_customer(request, pk):
 
 # customer part
 class CustomerDashboardView(TemplateView):
-    template_name = 'account/customer/customer_dashboard.html'
+    template_name = 'account2/customer/customer_dashboard.html'
 
     def get_context_data(self, *args, **kwargs):
         context = super(CustomerDashboardView, self).get_context_data(*args, **kwargs)

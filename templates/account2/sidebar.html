@@ -1,0 +1,51 @@
+{% load static %}
+
+<!-- Main Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-danger shadow">
+    <div class="container-fluid">
+        <!-- Sidebar Toggle Button, visible only on smaller screens -->
+        <button class="btn btn-outline-primary d-lg-none me-3" id="sidebarToggle">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <!-- Navbar Brand -->
+        <a class="navbar-brand" href="#">
+            <!-- <img src="../assets/images/mylogo/logome1.png" alt="" class="logo" style="width: 50px;"> -->
+        </a>
+
+        <!-- Right-aligned content -->
+        <div class="d-flex align-items-center ms-auto">
+            <img src="{{account.picture.url}}" alt="Profile" class="rounded-circle" width="40" height="40">
+            <div class="dropdown ms-3">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    Translate
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                    <li><a class="dropdown-item" href="#">English</a></li>
+                    <li><a class="dropdown-item" href="#">Spanish</a></li>
+                    <li><a class="dropdown-item" href="#">French</a></li>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+</nav>
+
+<!-- Sidebar -->
+<div id="sidebar" class="hidden shadow">
+    <div class="d-flex justify-content-end p-2">
+        <!-- Custom Close Button, visible only on smaller screens -->
+        <button type="button" class="btn-close btn-close-custom d-lg-none" id="closeSidebar"></button>
+    </div>
+    <div class="profile_picture px-4">
+        <img src="{{account.picture.url}}" alt="Profile" class="rounded-circle" width="140" height="140">
+    </div>
+    <hr>
+    
+    <ul class="nav flex-column p-2">
+        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+    </ul>
+</div>
