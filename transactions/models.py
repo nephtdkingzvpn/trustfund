@@ -11,7 +11,7 @@ class Transaction(models.Model):
 	beneficiary_name = models.CharField(max_length=200)
 	beneficiary_account = models.CharField(max_length=50, null=True, blank=True)
 	beneficiary_bank = models.CharField(max_length=200, blank=True)
-	iban_number = models.CharField(max_length=100, blank=True)
+	iban_number = models.CharField(max_length=100, null=True, blank=True)
 	ref_code = models.CharField(max_length=20, null=True, blank=True)
 	amount = models.DecimalField(max_digits=12, decimal_places=2)
 	balance_after_transaction = models.DecimalField(decimal_places=2, max_digits=12, null=True, blank=True)

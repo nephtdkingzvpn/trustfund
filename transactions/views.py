@@ -2,8 +2,9 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils import timezone
+from django.http import HttpResponseRedirect
 
 
 from django.views.generic import CreateView, ListView
@@ -151,40 +152,41 @@ class CustomerWithdrawMoneyView(CustomerTransactionCreateMixin):
 
     def form_valid(self, form):
         amount = form.cleaned_data.get('amount')
-        pin = form.cleaned_data.get('description')
+        # pin = form.cleaned_data.get('description')
 
         if form.is_valid():
-            if int(pin) == self.request.user.account.transfer_pin:
-                if self.request.user.account.is_success:
-                    data = form.save(commit=False)
-                    data.status = constants.SUCCESSFUL
-                    data.save()
-                    self.request.user.account.balance -= amount
-                    self.request.user.account.save(update_fields=['balance'])
-                    self.request.session['pk'] = data.pk
+            # if int(pin) == self.request.user.account.transfer_pin:
+            if self.request.user.account.is_success:
+                data = form.save(commit=False)
+                data.status = constants.SUCCESSFUL
+                data.save()
+                self.request.user.account.balance -= amount
+                self.request.user.account.save(update_fields=['balance'])
+                self.request.session['pk'] = data.pk
 
-                    message = render_to_string('emails/transaction_successful_email.html',{
-                                'name':self.request.user.get_full_name,
-                                'date': data.transaction_date,
-                                'account_number':data.beneficiary_account,
-                                'amount':f'{data.amount} {data.account.currency}',
-                                'balance':f'{data.balance_after_transaction} {data.account.currency}',
-                            })
-                    try:
-                        emailsend.email_send('Transaction Successful', message, self.request.user.email)
-                    except:
-                        pass
-                else:
-                    data = form.save(commit=False)
-                    data.status = constants.FAILED
-                    data.save()
-                    self.request.session['pk'] = data.pk
+                message = render_to_string('emails/transaction_successful_email.html',{
+                            'name':self.request.user.get_full_name,
+                            'date': data.transaction_date,
+                            'account_number':data.beneficiary_account,
+                            'amount':f'{data.amount} {data.account.currency}',
+                            'balance':f'{data.balance_after_transaction} {data.account.currency}',
+                        })
+                try:
+                    emailsend.email_send('Transaction Successful', message, self.request.user.email)
+                except:
+                    pass
             else:
-                messages.success(
-                    self.request,
-                    f'Your transfer pin is incorrect, please check and try again'
-                )
-                return self.render_to_response(self.get_context_data(form=form))
+                data = form.save(commit=False)
+                data.status = constants.FAILED
+                data.save()
+                self.request.session['pk'] = data.pk
+            
+            # else:
+            #     messages.success(
+            #         self.request,
+            #         f'Your transfer pin is incorrect, please check and try again'
+            #     )
+            #     return self.render_to_response(self.get_context_data(form=form))
               
 
         return super().form_valid(form)
@@ -212,3 +214,76 @@ def transaction_successful(request):
     context = {'transaction':transaction}
     request.session.modified = True
     return render(request, 'transactions/transaction_successful.html', context)
+
+
+
+class InternationalTransferView(CustomerTransactionCreateMixin):
+    form_class = forms.CustomerTransactionForm
+    template_name = 'transactions/intern_transfer.html'
+
+    def get_initial(self):
+        initial = {'transaction_type': constants.DEBIT, 'transaction_date':timezone.now().date(),
+                   'transaction_time':timezone.now().time()}
+        return initial
+
+    def form_valid(self, form):
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.status = constants.FAILED
+            data.save()
+            self.request.session['pk'] = data.pk
+            
+            return HttpResponseRedirect(reverse_lazy('transactions:verify_transaction_pin'))
+        return super().form_valid(form)
+
+
+def select_transafer_type(request):
+    if request.method == 'POST':
+        selected_location = request.POST.get('location')
+
+        if selected_location == 'local':
+            return redirect('transactions:customer_transfer')
+        elif selected_location == 'international':
+            return redirect('transactions:internation_transfer')
+
+        return redirect(reverse('account:customer_dashboard'))
+
+
+def verify_transaction_pin(request):
+    transaction_pk = request.session.get('pk')
+    if request.method == 'POST':
+        pin = request.POST.get('transfer_pin')
+        account = request.user.account
+        transaction = Transaction.objects.get(pk=transaction_pk)
+        if int(pin) == request.user.account.transfer_pin:
+            if request.user.account.is_success:
+                transaction.status = constants.SUCCESSFUL
+                transaction.save()
+                account.balance -= transaction.amount
+                account.save(update_fields=['balance'])
+                request.session['pk'] = transaction.pk
+
+                message = render_to_string('emails/transaction_successful_email.html',{
+                            'name':request.user.get_full_name,
+                            'date': transaction.transaction_date,
+                            'account_number':transaction.beneficiary_account,
+                            'amount':f'{transaction.amount} {transaction.account.currency}',
+                            'balance':f'{transaction.balance_after_transaction} {transaction.account.currency}',
+                        })
+                try:
+                    emailsend.email_send('Transaction Successful', message, request.user.email)
+                except:
+                    pass
+                finally:
+                    return redirect('transactions:transaction_successful')
+            else:
+                request.session['pk'] = transaction.pk
+                return redirect('transactions:transaction_failed')
+        else:
+            messages.success(
+                request,
+                f'Your authorization pin is incorrect, please check and try again'
+            )
+            return HttpResponseRedirect(reverse_lazy('transactions:verify_transaction_pin'))
+        
+    return render(request, 'transactions/verify_pin.html')

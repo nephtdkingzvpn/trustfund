@@ -52,9 +52,12 @@
         </li>
         <li class="nav-item">
             
-            <a class="nav-link" href="{% url 'transactions:customer_transfer' %}">
+            <a class="nav-link" href="" data-bs-toggle="modal" data-bs-target="#transaferType">
                 <i class="fa-solid fa-money-bill-transfer me-4"></i><span>Make Transfer</span>
             </a>
+            <!-- <a class="nav-link" href="{% url 'transactions:customer_transfer' %}">
+                <i class="fa-solid fa-money-bill-transfer me-4"></i><span>Make Transfer</span>
+            </a> -->
         </li>
         <li class="nav-item">
             
@@ -92,3 +95,34 @@
         <span>Logout</span><i class="ms-3 fa-solid fa-arrow-right-from-bracket"></i>
     </a> -->
 </div>
+
+
+
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#transaferType">
+    Launch demo modal
+  </button> -->
+  
+  <!-- Modal -->
+  <div class="modal fade" id="transaferType" tabindex="-1" aria-labelledby="transaferTypeLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="transaferTypeLabel">Select Transfer Type</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="{% url 'transactions:select_transafer_type' %}" method="POST">
+            {% csrf_token %}
+            <div class="modal-body">
+                <select class="form-select" aria-label="Default select example" name="location">
+                    <option value="local"><a href="#">Local Transfer</a></option>
+                    <option value="international"><a href="#">International Transfer</a></option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger w-100 fw-bold">Continue</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
