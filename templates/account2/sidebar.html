@@ -111,7 +111,7 @@
           <h1 class="modal-title fs-5" id="transaferTypeLabel">Select Transfer Type</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="{% url 'transactions:select_transafer_type' %}" method="POST">
+        <form action="{% url 'transactions:select_transafer_type' %}" method="POST" id="stransfer-form">
             {% csrf_token %}
             <div class="modal-body">
                 <select class="form-select" aria-label="Default select example" name="location">
@@ -120,9 +120,35 @@
                 </select>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-danger w-100 fw-bold">Continue</button>
+                <button type="submit" id="stransfer-btn" class="btn btn-dark w-100 fw-bold">
+                    <span id="stransfer-btn-text">Continue</span>
+                    <div class="spinner-border text-light spinner-border-sm d-none" role="status" id="stransfer-btn-spinner">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </button>
+                <!-- <button type="submit" class="btn btn-danger w-100 fw-bold">Continue</button> -->
             </div>
         </form>
       </div>
     </div>
   </div>
+
+
+  <script>
+    const form = document.querySelector('#stransfer-form');
+    const loginBtn = document.querySelector('#stransfer-btn');
+    const btnSpinner = document.querySelector('#stransfer-btn-spinner');
+    const btnText = document.querySelector('#stransfer-btn-text');
+
+    form.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        console.log('clicked');
+
+        loginBtn.style.backgroundColor = '#e88087';
+        loginBtn.style.borderColor = '#e88087';
+        btnText.style.display = 'none';
+        btnSpinner.classList.remove('d-none');
+
+        form.submit();
+    })
+</script>
