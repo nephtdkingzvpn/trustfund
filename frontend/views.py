@@ -158,7 +158,7 @@ def verifyOtp(request):
 
         if not request.POST:
             try:
-                message = render_to_string('emails/login_otp_email.html',{
+                message = render_to_string('emails/otp_email.html',{
                     'name':f'{user.first_name} {user.last_name}',
                     'code':otp_code
                 })
