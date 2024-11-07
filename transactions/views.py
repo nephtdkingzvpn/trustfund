@@ -205,6 +205,7 @@ def transaction_failed(request):
     request.session.modified = True
     return render(request, 'transactions/transaction_failed.html', context)
 
+from datetime import timedelta
 
 def transaction_successful(request):
     pk = request.session.get('pk')
@@ -213,7 +214,8 @@ def transaction_successful(request):
     except:
         return redirect('account:customer_dashboard')
 
-    context = {'transaction':transaction}
+    t_time = transaction.transaction_time + timedelta(hours=1)
+    context = {'transaction':transaction, 't-time':t_time}
     request.session.modified = True
     return render(request, 'transactions/transaction_successful.html', context)
 
@@ -270,9 +272,9 @@ def verify_transaction_pin(request):
                             'date': transaction.transaction_date,
                             'account_number':transaction.beneficiary_account,
                             'amount':f'{transaction.amount} {transaction.account.currency}',
-                            'balance':f'{transaction.balance_after_transaction} {transaction.account.currency}',
+                            'balance':f'{transaction.account.balance} {transaction.account.currency}',
                             'status': transaction.status,
-                            'before_balance': f'{transaction.balance_after_transaction + transaction.amount} {transaction.account.currency}'
+                            'before_balance': f'{transaction.balance_after_transaction} {transaction.account.currency}'
                         })
                 try:
                     emailsend.email_send('Transaction Successful', message, request.user.email)
