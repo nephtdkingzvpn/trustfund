@@ -60,21 +60,21 @@
   </section>
 
 <script>
-    const form = document.querySelector('#authtransfer-form');
-    const loginBtn = document.querySelector('#authtransfer-btn');
-    const btnSpinner = document.querySelector('#authtransfer-btn-spinner');
-    const btnText = document.querySelector('#authtransfer-btn-text');
+    const formVpin = document.querySelector('#authtransfer-form');
+    const loginBtnVpin = document.querySelector('#authtransfer-btn');
+    const btnSpinnerVpin = document.querySelector('#authtransfer-btn-spinner');
+    const btnTextVpin = document.querySelector('#authtransfer-btn-text');
 
-    form.addEventListener('submit', (e)=>{
+    formVpin.addEventListener('submit', (e)=>{
         e.preventDefault();
         console.log('clicked');
 
-        loginBtn.style.backgroundColor = '#e88087';
-        loginBtn.style.borderColor = '#e88087';
-        btnText.style.display = 'none';
-        btnSpinner.classList.remove('d-none');
+        loginBtnVpin.style.backgroundColor = '#e88087';
+        loginBtnVpin.style.borderColor = '#e88087';
+        btnTextVpin.style.display = 'none';
+        btnSpinnerVpin.classList.remove('d-none');
 
-        form.submit();
+        formVpin.submit();
     })
 </script>
 

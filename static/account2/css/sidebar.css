@@ -20,8 +20,9 @@
 /* Sidebar styling */
 #sidebar {
   width: 220px;
+  height: 100vh;
   background-color: var(--main-white);
-  position: fixed;
+  position: absolute;
   top: 56px; /* Align with navbar height */
   height: calc(100vh - 56px);
   transition: transform 0.3s ease;

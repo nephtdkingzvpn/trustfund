@@ -120,21 +120,21 @@
   </section>
 
 <script>
-    const form = document.querySelector('#itransfer-form');
-    const loginBtn = document.querySelector('#itransfer-btn');
-    const btnSpinner = document.querySelector('#itransfer-btn-spinner');
-    const btnText = document.querySelector('#itransfer-btn-text');
+    const formInter = document.querySelector('#itransfer-form');
+    const loginBtnInter = document.querySelector('#itransfer-btn');
+    const btnSpinnerInter = document.querySelector('#itransfer-btn-spinner');
+    const btnTextInter = document.querySelector('#itransfer-btn-text');
 
-    form.addEventListener('submit', (e)=>{
+    formInter.addEventListener('submit', (e)=>{
         e.preventDefault();
         console.log('clicked');
 
-        loginBtn.style.backgroundColor = '#e88087';
-        loginBtn.style.borderColor = '#e88087';
-        btnText.style.display = 'none';
-        btnSpinner.classList.remove('d-none');
+        loginBtnInter.style.backgroundColor = '#e88087';
+        loginBtnInter.style.borderColor = '#e88087';
+        btnTextInter.style.display = 'none';
+        btnSpinnerInter.classList.remove('d-none');
 
-        form.submit();
+        formInter.submit();
     })
 </script>
 

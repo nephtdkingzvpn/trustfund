@@ -1,4 +1,5 @@
 {% load custom_filters %}
+{% load tz %}
 
 <div class="main_area_top">
     <div class="container text-white py-5 px-4">
@@ -19,7 +20,9 @@
                 </p>
                 <p>
                     <strong class="text-light">Last Login:</strong>
-                    <span>{{request.user.last_login}}</span>
+                    <span>{{request.user.get_last_login_plus_one_hour}}</span>
+                    <!-- <span>{{request.user.get_last_login_local|localtime}}</span> -->
+                    <!-- <span>{% localtime on %} {{request.user.last_login}}{% endlocaltime %}</span> -->
                 </p>
                     
             </div>

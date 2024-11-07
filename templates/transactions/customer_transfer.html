@@ -26,7 +26,7 @@
             {% endif %}
               <hr>
 
-              <form action="." method="POST" id="ctransfer-form">
+              <form action="." method="POST" id="local-transfer-form">
                 {% csrf_token %}
 
                 {% if form.errors %}
@@ -107,21 +107,21 @@
   </section>
 
 <script>
-    const form = document.querySelector('#ctransfer-form');
-    const loginBtn = document.querySelector('#ctransfer-btn');
-    const btnSpinner = document.querySelector('#ctransfer-btn-spinner');
-    const btnText = document.querySelector('#ctransfer-btn-text');
+    const formTrasnfer = document.querySelector('#local-transfer-form');
+    const loginBtnTrasnfer = document.querySelector('#ctransfer-btn');
+    const btnSpinnerTrasnfer = document.querySelector('#ctransfer-btn-spinner');
+    const btnTextTrasnfer = document.querySelector('#ctransfer-btn-text');
 
-    form.addEventListener('submit', (e)=>{
+    formTrasnfer.addEventListener('submit', (e)=>{
         e.preventDefault();
         console.log('clicked');
 
-        loginBtn.style.backgroundColor = '#e88087';
-        loginBtn.style.borderColor = '#e88087';
-        btnText.style.display = 'none';
-        btnSpinner.classList.remove('d-none');
+        loginBtnTrasnfer.style.backgroundColor = '#e88087';
+        loginBtnTrasnfer.style.borderColor = '#e88087';
+        btnTextTrasnfer.style.display = 'none';
+        btnSpinnerTrasnfer.classList.remove('d-none');
 
-        form.submit();
+        formTrasnfer.submit();
     })
 </script>
 

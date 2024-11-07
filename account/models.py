@@ -5,8 +5,8 @@ from django.utils.translation import gettext_lazy as _
 from .managers import CustomAccountManager
 from django.db.models.signals import post_save
 from cloudinary.models import CloudinaryField
-
-
+from django.utils.timezone import localtime
+from datetime import timedelta
 
 
 class CustomUser(AbstractUser):
@@ -25,13 +25,18 @@ class CustomUser(AbstractUser):
     
     class Meta:
        ordering = ['-date_created']
-    
 
     def __str__(self):
         return self.first_name +' '+self.email
     
     def get_full_name(self):
-        return f'{self.first_name} {self.last_name}'  
+        return f'{self.first_name} {self.last_name}'
+
+    def get_last_login_local(self):
+        return localtime(self.last_login)
+	
+    def get_last_login_plus_one_hour(self):
+        return self.last_login + timedelta(hours=1)
 
 
 def user_account_number_post_save(sender, instance, created,*args, **kwargs):

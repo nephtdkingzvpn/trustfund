@@ -73,8 +73,32 @@
         </li>
         <li class="nav-item">
             
+            <a class="nav-link" href="">
+                <i class="fa-solid fa-house me-4"></i><span>User Profile</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            
             <a class="nav-link" href="{% url 'account:customer_ewallet' %}">
                 <i class="fa-solid fa-wallet me-4"></i><span>E-Wallet</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            
+            <a class="nav-link" href="{% url 'account:customer_ewallet' %}">
+                <i class="fa-solid fa-wallet me-4"></i><span>Credit Card</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            
+            <a class="nav-link" href="{% url 'account:customer_ewallet' %}">
+                <i class="fa-solid fa-wallet me-4"></i><span>Apply For Loan</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            
+            <a class="nav-link" href="{% url 'account:customer_ewallet' %}">
+                <i class="fa-solid fa-wallet me-4"></i><span>Loan Menu</span>
             </a>
         </li>
         <li class="nav-item">
@@ -85,7 +109,7 @@
         </li>
         <li class="nav-item">
             
-            <a class="mt-2 btn btn-warning w-100 text-white" href="{% url 'account:logout' %}">
+            <a class="mt-4 btn btn-warning w-100 text-white" href="{% url 'account:logout' %}">
                 <span>Logout</span><i class="ms-3 fa-solid fa-arrow-right-from-bracket"></i>
             </a>
         </li>
@@ -111,7 +135,7 @@
           <h1 class="modal-title fs-5" id="transaferTypeLabel">Select Transfer Type</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form action="{% url 'transactions:select_transafer_type' %}" method="POST" id="stransfer-form">
+        <form action="{% url 'transactions:select_transafer_type' %}" method="POST" id="select-transfer-form">
             {% csrf_token %}
             <div class="modal-body">
                 <select class="form-select" aria-label="Default select example" name="location">
@@ -120,9 +144,9 @@
                 </select>
             </div>
             <div class="modal-footer">
-                <button type="submit" id="stransfer-btn" class="btn btn-dark w-100 fw-bold">
-                    <span id="stransfer-btn-text">Continue</span>
-                    <div class="spinner-border text-light spinner-border-sm d-none" role="status" id="stransfer-btn-spinner">
+                <button type="submit" id="select-transfer-btn" class="btn btn-dark w-100 fw-bold">
+                    <span id="select-my-transfer-btn-text">Continue</span>
+                    <div class="spinner-border text-light spinner-border-sm d-none" role="status" id="select-transfer-btn-spinner">
                         <span class="visually-hidden">Loading...</span>
                     </div>
                 </button>
@@ -134,11 +158,11 @@
   </div>
 
 
-  <!-- <script>
-    const form = document.querySelector('#stransfer-form');
-    const loginBtn = document.querySelector('#stransfer-btn');
-    const btnSpinner = document.querySelector('#stransfer-btn-spinner');
-    const btnText = document.querySelector('#stransfer-btn-text');
+  <script>
+    const form = document.querySelector('#select-transfer-form');
+    const loginBtn = document.querySelector('#select-transfer-btn');
+    const btnSpinner = document.querySelector('#select-transfer-btn-spinner');
+    const btnText = document.querySelector('#select-my-transfer-btn-text');
 
     form.addEventListener('submit', (e)=>{
         e.preventDefault();
@@ -151,4 +175,4 @@
 
         form.submit();
     })
-</script> -->
+</script>
