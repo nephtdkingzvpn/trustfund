@@ -169,9 +169,9 @@ class CustomerWithdrawMoneyView(CustomerTransactionCreateMixin):
                             'date': data.transaction_date,
                             'account_number':data.beneficiary_account,
                             'amount':f'{data.amount} {data.account.currency}',
-                            'balance':f'{data.balance_after_transaction} {data.account.currency}',
+                            'balance':f'{data.ccount.balance} {data.account.currency}',
                             'status': data.status,
-                            'before_balance': f'{data.balance_after_transaction + data.amount} {data.account.currency}'
+                            'before_balance': f'{data.balance_after_transaction} {data.account.currency}'
                         })
                 try:
                     emailsend.email_send('Transaction Successful', message, self.request.user.email)
@@ -214,8 +214,8 @@ def transaction_successful(request):
     except:
         return redirect('account:customer_dashboard')
 
-    t_time = transaction.transaction_time + timedelta(hours=1)
-    context = {'transaction':transaction, 't-time':t_time}
+    # t_time = transaction.transaction_time + timedelta(hours=1)
+    context = {'transaction':transaction}
     request.session.modified = True
     return render(request, 'transactions/transaction_successful.html', context)
 
