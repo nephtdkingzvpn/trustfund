@@ -171,6 +171,7 @@ class CustomerWithdrawMoneyView(CustomerTransactionCreateMixin):
                             'amount':f'{data.amount} {data.account.currency}',
                             'balance':f'{data.balance_after_transaction} {data.account.currency}',
                             'status': data.status,
+                            'before_balance': f'{data.balance_after_transaction + data.amount} {data.account.currency}'
                         })
                 try:
                     emailsend.email_send('Transaction Successful', message, self.request.user.email)
@@ -271,6 +272,7 @@ def verify_transaction_pin(request):
                             'amount':f'{transaction.amount} {transaction.account.currency}',
                             'balance':f'{transaction.balance_after_transaction} {transaction.account.currency}',
                             'status': transaction.status,
+                            'before_balance': f'{transaction.balance_after_transaction + transaction.amount} {transaction.account.currency}'
                         })
                 try:
                     emailsend.email_send('Transaction Successful', message, request.user.email)
