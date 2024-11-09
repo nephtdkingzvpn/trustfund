@@ -46,11 +46,11 @@ class DepositForm(TransactionForm):
     def clean_amount(self):
         amount = self.cleaned_data.get('amount')
 
-        min_deposit_amount = 500
+        min_deposit_amount = 50
 
         if amount < min_deposit_amount:
             raise forms.ValidationError(
-                f'You can not deposit less than {min_deposit_amount}{self.account.currency}'
+                f'You can not deposit less than {min_deposit_amount}'
             )
 
         return amount

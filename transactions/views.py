@@ -29,6 +29,13 @@ class TransactionCreateMixin(LoginRequiredMixin, CreateView):
 
         return context
     
+    # def get_form_kwargs(self):
+    #     kwargs = super().get_form_kwargs()
+    #     kwargs.update({
+    #         'account': self.object.account
+    #     })
+    #     return kwargs
+    
 
 class DepositMoneyView(TransactionCreateMixin):
     form_class = forms.DepositForm
