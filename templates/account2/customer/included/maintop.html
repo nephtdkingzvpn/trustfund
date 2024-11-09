@@ -20,7 +20,8 @@
                 </p>
                 <p>
                     <strong class="text-light">Last Login:</strong>
-                    <span>{{request.user.get_last_login_plus_one_hour}}</span>
+                    <span id="last-login">{{request.user.last_login|date:"c"}}</span>
+                    <!-- <span>{{request.user.get_last_login_plus_one_hour}}</span> -->
                     <!-- <span>{{request.user.get_last_login_local|localtime}}</span> -->
                     <!-- <span>{% localtime on %} {{request.user.last_login}}{% endlocaltime %}</span> -->
                 </p>
@@ -29,3 +30,20 @@
         </div>
     </div>
 </div>
+
+<!-- Convert the time using JavaScript -->
+<script>
+    // Get the UTC timestamp string from the template
+    const lastLoginElement = document.getElementById('last-login');
+    const utcTimestamp = lastLoginElement.textContent; // e.g., "2024-11-09T14:30:00+00:00"
+
+    // Convert the UTC timestamp to a JavaScript Date object
+    const date = new Date(utcTimestamp);
+
+    // Convert to local time
+    const localDateString = date.toLocaleDateString();
+    const localTimeString = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    // Optionally, update the HTML with the local date and time
+    lastLoginElement.textContent = `${localTimeString}`;
+</script>
