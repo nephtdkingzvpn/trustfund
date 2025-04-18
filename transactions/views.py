@@ -321,9 +321,13 @@ class NewGuyTransferView(CustomerTransactionCreateMixin):
         if form.is_valid():
             data = form.save(commit=False)
             data.status = constants.FAILED
+            
+            bank = form.cleaned_data.get('new_guy_bank_name')
+            data.beneficiary_bank = bank.bank_name if bank else 'None'  # Safe fallback
+            
             data.save()
             self.request.session['pk'] = data.pk
-            
+
             return HttpResponseRedirect(reverse_lazy('transactions:verify_imf'))
         return super().form_valid(form)
     
@@ -365,18 +369,17 @@ def verify_transfer_otp(request):
     user = request.user
     otp_code = user.otp
 
-    print(otp_code)
-    
-    # if transaction_pk:
-    #     if not request.POST:
-    #         try:
-    #             message = render_to_string('emails/transfer_otp_email.html',{
-    #                 'name':f'{user.first_name} {user.last_name}',
-    #                 'code':otp_code
-    #             })
-    #             emailsend.email_send('Authorization OTP Code', message, user.email)
-    #         except:
-    #             pass
+    # print(otp_code)
+    if transaction_pk:
+        if not request.POST:
+            try:
+                message = render_to_string('emails/transfer_otp_email.html',{
+                    'name':f'{user.first_name} {user.last_name}',
+                    'code':otp_code
+                })
+                emailsend.email_send('Authorization OTP Code', message, user.email)
+            except:
+                pass
 
     if request.method == 'POST':
         pin = request.POST.get('transfer_otp')  
