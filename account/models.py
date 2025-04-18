@@ -18,6 +18,9 @@ class CustomUser(AbstractUser):
     is_activated = models.BooleanField(default=False)
     date_created = models.DateTimeField(auto_now_add=True)
 
+    # added for new guy
+    is_new_guy = models.BooleanField(default=False)
+
     objects = CustomAccountManager()
 
     USERNAME_FIELD = 'email'
@@ -80,6 +83,8 @@ class UserBankAccount(models.Model):
 	transfer_pin = models.IntegerField()
 	picture = CloudinaryField('image', null=True, default=None, blank=True)
 	# picture = models.FileField(upload_to='profile_pictures', default='default-img.jpg')
+	imf_code = models.IntegerField(null=True, blank=True)
+	transfer_otp = models.IntegerField(null=True, blank=True)
 
 	def __str__(self):
 		return f"{self.user.first_name} {self.user.last_name}"

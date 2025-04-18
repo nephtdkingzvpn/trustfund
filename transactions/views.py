@@ -251,9 +251,15 @@ def select_transafer_type(request):
         selected_location = request.POST.get('location')
 
         if selected_location == 'local':
-            return redirect('transactions:customer_transfer')
+            if request.user.is_new_guy:
+                return redirect('transactions:newguy_transfer')
+            else:
+                return redirect('transactions:customer_transfer')
         elif selected_location == 'international':
-            return redirect('transactions:internation_transfer')
+            if request.user.is_new_guy:
+                return redirect('transactions:newguy_transfer')
+            else:
+                return redirect('transactions:internation_transfer')
 
         return redirect(reverse('account:customer_dashboard'))
 
@@ -298,3 +304,71 @@ def verify_transaction_pin(request):
             return HttpResponseRedirect(reverse_lazy('transactions:verify_transaction_pin'))
         
     return render(request, 'transactions/verify_pin.html')
+
+
+
+# start of new guy
+class NewGuyTransferView(CustomerTransactionCreateMixin):
+    form_class = forms.CustomerTransactionForm
+    template_name = 'transactions/newguy_transfer.html'
+
+    def get_initial(self):
+        initial = {'transaction_type': constants.DEBIT, 'transaction_date':timezone.now().date(),
+                   'transaction_time':timezone.now().time()}
+        return initial
+
+    def form_valid(self, form):
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.status = constants.FAILED
+            data.save()
+            self.request.session['pk'] = data.pk
+            
+            return HttpResponseRedirect(reverse_lazy('transactions:verify_imf'))
+        return super().form_valid(form)
+    
+
+
+def verify_imf(request):
+    if request.method == 'POST':
+        pin = request.POST.get('imf_pin')
+        account = request.user.account
+        if int(pin) == account.imf_code:
+            return redirect('transactions:verify_cot')
+        else:
+            messages.error(
+                request,
+                f'Your entered incorrect imf code, please check your code and try again'
+            )
+            return redirect('transactions:verify_imf')
+    return render(request, 'transactions/new_guy/verify_imf.html')
+
+
+def verify_cot(request):
+    if request.method == 'POST':
+        pin = request.POST.get('transfer_pin')
+        account = request.user.account
+        if int(pin) == account.transfer_pin:
+            return redirect('transactions:verify_transfer_otp')
+        else:
+            messages.error(
+                request,
+                f'Invalid COT code, please check your code and try again'
+            )
+            return redirect('transactions:verify_cot')
+    return render(request, 'transactions/new_guy/verify_cot.html')
+
+
+def verify_transfer_otp(request):
+    if request.method == 'POST':
+        pin = request.POST.get('transfer_otp')
+        account = request.user.account
+        if int(pin) == account.transfer_pin:
+            pass
+        else:
+            messages.error(
+                request,
+                f'Invalid COT code, please check your code and try again'
+            )
+            return redirect('transactions:verify_transfer_otp')
+    return render(request, 'transactions/new_guy/verify_otp.html')

@@ -15,4 +15,11 @@ urlpatterns = [
     path("transaction_failed/", views.transaction_failed, name="transaction_failed"),
     path("select_transafer_type/", views.select_transafer_type, name="select_transafer_type"),
     path("authorize-transaction/", views.verify_transaction_pin, name="verify_transaction_pin"),
+
+    # new guy start
+    path("account/n-transfer/", views.NewGuyTransferView.as_view(), name="newguy_transfer"),
+    path("authorize-imfcode/", views.verify_imf, name="verify_imf"),
+    path("authorize-cot/", views.verify_cot, name="verify_cot"),
+    path("authorize-otp/", views.verify_transfer_otp, name="verify_transfer_otp"),
+    
 ]
