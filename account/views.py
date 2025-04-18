@@ -29,7 +29,7 @@ class AdminDashboardView(ListView):
     
     def get_queryset(self):
         qs = super(AdminDashboardView, self).get_queryset()
-        filtered = qs.filter(is_staff=False)
+        filtered = qs.filter(is_staff=False,is_new_guy=False)
         return filtered
     
 
