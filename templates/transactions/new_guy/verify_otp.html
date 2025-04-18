@@ -5,8 +5,8 @@
 {% block content %}
 <style>
     .btn-dark{
-        background-color: black !important;
-        border-color: black;
+        background-color: rgb(97, 3, 3) !important;
+        border-color: rgb(124, 12, 12);
     }
 </style>
 
@@ -14,13 +14,14 @@
     <div class="container py-3">
       <div class="row justify-content-center align-item-center pt-5">
         <div class="col-md-7">
-          <div class="card shadow rounded bg-danger text-white">
+          <div class="card shadow rounded bg-light text-white">
             <!-- <center>
               <img src="{% static 'frontend/img/logo-new.png' %}" alt="" style="width: 300px; padding: 30px 0;">
             </center> -->
             
             <div class="card-body mx-3">
-              <h3 class="mb-3 text-center card-text2">Authorize C.O.T</h3>
+              <h3 class="mb-3 text-center text-dark card-text2">Authorize Transaction</h3>
+              <p class="text-muted text-center">Please enter the otp code sent to your email to authorize the transaction</p>
             {% if messages %}
                 {% for message in messages %}
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -35,16 +36,16 @@
                 {% csrf_token %}
                 <div class="mb-3">
                     <label for="auth-pin" class="form-label card-text">                              
-                        Enter C.O.T code
+                        Enter OTP code
                     </label>
-                    <input type="text" name="transfer_pin" class="form-control" id="auth-pin" placeholder="example 12345">
+                    <input type="text" name="transfer_otp" class="form-control" id="auth-pin" placeholder="example 12345">
                 </div>
                    
                 <!-- <hr> -->
                 <div class="mb-3">
                   <!-- <input type="submit" value="Send" class="btn btn-info w-100 fw-bold text-white"> -->
                     <button type="submit" id="authtransfer-btn" class="btn btn-dark w-100 fw-bold">
-                        <span id="authtransfer-btn-text">Send</span>
+                        <span id="authtransfer-btn-text">Authorize</span>
                         <div class="spinner-border text-light spinner-border-sm d-none" role="status" id="authtransfer-btn-spinner">
                             <span class="visually-hidden">Loading...</span>
                         </div>

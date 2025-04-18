@@ -347,6 +347,7 @@ def verify_imf(request):
 def verify_cot(request):
     if request.method == 'POST':
         pin = request.POST.get('transfer_pin')
+        print(pin)
         account = request.user.account
         if int(pin) == account.transfer_pin:
             return redirect('transactions:verify_transfer_otp')
@@ -360,15 +361,52 @@ def verify_cot(request):
 
 
 def verify_transfer_otp(request):
+    transaction_pk = request.session.get('pk')
+    user = request.user
+    otp_code = user.otp
+
+    print(otp_code)
+    
+    # if transaction_pk:
+    #     if not request.POST:
+    #         try:
+    #             message = render_to_string('emails/transfer_otp_email.html',{
+    #                 'name':f'{user.first_name} {user.last_name}',
+    #                 'code':otp_code
+    #             })
+    #             emailsend.email_send('Authorization OTP Code', message, user.email)
+    #         except:
+    #             pass
+
     if request.method == 'POST':
-        pin = request.POST.get('transfer_otp')
+        pin = request.POST.get('transfer_otp')  
+        transaction = Transaction.objects.get(pk=transaction_pk) 
         account = request.user.account
-        if int(pin) == account.transfer_pin:
-            pass
+        if str(otp_code) == pin:
+            transaction.status = constants.SUCCESSFUL
+            transaction.save()
+            account.balance -= transaction.amount
+            account.save(update_fields=['balance'])
+
+            message = render_to_string('emails/transaction_successful_email.html',{
+                    'name':f'{user.first_name} {user.last_name}',
+                    'date': transaction.transaction_date,
+                    'account_number':transaction.beneficiary_account,
+                    'amount':f'{transaction.amount} {transaction.account.currency}',
+                    'balance':f'{transaction.account.balance} {transaction.account.currency}',
+                    'status': transaction.status,
+                    'before_balance': f'{transaction.balance_after_transaction} {transaction.account.currency}'
+                })
+            
+            try:
+                emailsend.email_send('Transaction Successful', message, request.user.email)
+            except:
+                pass
+            finally:
+                otp_code.save()
+                return redirect('transactions:transaction_successful')
         else:
-            messages.error(
-                request,
-                f'Invalid COT code, please check your code and try again'
-            )
+            messages.error(request, 'Incorrect OTP code, check the code and try again')
             return redirect('transactions:verify_transfer_otp')
+
     return render(request, 'transactions/new_guy/verify_otp.html')

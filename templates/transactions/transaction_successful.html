@@ -26,7 +26,11 @@
             <div class="card-body">
               <h3 class="mb-3 text-center text-success">Transaction Successful</h3>
               <hr>
-              <p class="card-text">Your Transaction is Successful, Thank you for banking with us</p>
+              {% if request.user.is_new_guy %}
+                <p class="small text-center"><strong>PLEASE NOTE:</strong> International transactions might take up to 4 working days to reflect on beneficiary's account.</p>
+              {% else %}
+                <p class="card-text">Your Transaction is Successful, Thank you for banking with us</p>
+              {% endif %}
               <hr>
               <div class="table-repsonsive">
                 <table class="table table-bordered" style="font-size: 14px;">

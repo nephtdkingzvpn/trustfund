@@ -6,6 +6,12 @@ from account.models import UserBankAccount
 from . import constants
 
 
+class Bank(models.Model):
+	bank_name = models.CharField(max_length=200)
+
+	def __str__(self):
+		return self.bank_name
+
 class Transaction(models.Model):
 	account = models.ForeignKey(UserBankAccount, related_name='transactions', on_delete=models.CASCADE)
 	beneficiary_name = models.CharField(max_length=200)
@@ -20,6 +26,7 @@ class Transaction(models.Model):
 	status = models.CharField(max_length=20, choices=constants.STATUS_CHOICES)
 	transaction_date = models.DateField(null=True)
 	transaction_time = models.TimeField(null=True)
+	new_guy_bank_name = models.ForeignKey(Bank, related_name='banks', on_delete=models.SET_NULL, null=True, blank=True)
 
 	class Meta:
 		ordering = ['-transaction_date', '-transaction_time']
