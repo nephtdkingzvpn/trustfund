@@ -1,4 +1,5 @@
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import (UserCreationForm, 
+                                    AuthenticationForm, PasswordChangeForm)
 from django.contrib.auth import get_user_model
 from django import forms
 
@@ -51,3 +52,12 @@ class UserUpdateForm(forms.ModelForm):
 
         for field in self.fields:
             self.fields[field].widget.attrs.update({'class': 'form-control mb-3'})
+
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Add Bootstrap classes to each field
+        for field in self.fields.values():
+            field.widget.attrs.update({'class': 'form-control mb-3'})

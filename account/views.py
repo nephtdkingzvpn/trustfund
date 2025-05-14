@@ -9,9 +9,11 @@ from django.views.generic import TemplateView, ListView, DetailView, UpdateView
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import update_session_auth_hash
 
 from .models import CustomUser, UserBankAccount
-from .forms import UserUpdateForm, UserBankAccountForm
+from .forms import UserUpdateForm, UserBankAccountForm, CustomPasswordChangeForm
 from transactions.models import Transaction
 
 
@@ -115,8 +117,6 @@ def admin_change_customer_password(request, pk):
         customer = CustomUser.objects.get(pk=pk)
         password_one = request.POST.get('password1')
         password_two = request.POST.get('password1')
-        print(password_one)
-        print(password_two)
         if password_one != password_two:
             messages.error(request, 'The two password does not match, check it and try again')
         else:
@@ -214,4 +214,17 @@ class CustomerAllTransactionsView(ListView):
         queryset = super().get_queryset().filter(account=self.request.user.account)
         return queryset
 
+
+@login_required
+def customer_change_password(request):
+    if request.method == 'POST':
+        form = CustomPasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Keep the user logged in
+            messages.success(request, 'password was changed successfully.')
+            return redirect('account:customer_settings')
+    else:
+        form = CustomPasswordChangeForm(request.user)
+    return render(request, 'account2/customer/change_password.html', {'form': form})
         

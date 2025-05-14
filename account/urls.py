@@ -20,6 +20,7 @@ urlpatterns = [
     path('customer_ewallet/', views.CustomerEwalleteView.as_view(), name="customer_ewallet"),
     path('customer_settings/', views.CustomerSettingsView.as_view(), name="customer_settings"),
     path('customer_transactions/', views.CustomerAllTransactionsView.as_view(), name="customer_transactions"),
+    path('customer_password/', views.customer_change_password, name="customer_change_password"),
 
     path('logout/', LogoutView.as_view(next_page='frontend:login'),name='logout'),
     
